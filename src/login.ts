@@ -3,7 +3,7 @@ import Bluebird from "bluebird";
 import inquirer, { QuestionCollection, Question } from "inquirer";
 import zlib from "zlib";
 import { STS, STSClientConfig } from "@aws-sdk/client-sts";
-import cheerio from "cheerio";
+import { load } from "cheerio";
 import { v4 } from "uuid";
 import puppeteer, { HTTPRequest } from "puppeteer";
 import querystring from "querystring";
@@ -16,7 +16,7 @@ import mkdirp from "mkdirp";
 import { Agent } from "https";
 import { NodeHttpHandler } from "@smithy/node-http-handler";
 
-const debug = _debug("aws-azure-login");
+const debug = _debug("aws-azure-auth");
 
 const WIDTH = 425;
 const HEIGHT = 550;
@@ -839,7 +839,7 @@ export const login = {
           } else {
             debug("State not recognized!");
             if (totalUnrecognizedDelay > MAX_UNRECOGNIZED_PAGE_DELAY) {
-              const path = "aws-azure-login-unrecognized-state.png";
+              const path = "aws-azure-auth-unrecognized-state.png";
               await page.screenshot({ path });
               throw new CLIError(
                 `Unable to recognize page state! A screenshot has been dumped to ${path}. If this problem persists, try running with --mode=gui or --mode=debug`
@@ -889,7 +889,7 @@ export const login = {
     debug("Converted", samlText);
 
     debug("Parsing SAML XML");
-    const saml = cheerio.load(samlText, { xmlMode: true });
+    const saml = load(samlText, { xmlMode: true });
 
     debug("Looking for role SAML attribute");
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

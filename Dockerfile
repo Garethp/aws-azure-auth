@@ -49,4 +49,4 @@ RUN cd /aws-azure-login \
 
 COPY lib /aws-azure-login/lib
 
-ENTRYPOINT ["node", "/aws-azure-login/lib", "--no-sandbox"]
+ENTRYPOINT ["node", "/aws-azure-auth/lib", "--no-sandbox"]

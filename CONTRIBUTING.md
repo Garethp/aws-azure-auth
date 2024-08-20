@@ -2,53 +2,27 @@
 
 ## Get started
 
-This project is written in TypeScript and is using prettier and eslint for code formatting. You need node v18.
+This project is built in Typescript with the following tools:
+ * `yarn` - Our package manager
+ * `eslint` - For static analysis
+ * `prettier` - For code formatting
 
-1. Install node v18. I recommend installing that with nvm: https://github.com/nvm-sh/nvm
-
-```sh
-nvm install 18
-```
-
-2. Make node v18 default
+Here's some steps that I recommend for getting started with this project:
 
 ```sh
-nvm alias default 18
-```
+# Use nvm to install Node 20
+nvm install 20
 
-3. Open a new terminal and verify node version (should return v18.X.X)
+# Set your default version to Node 20. You can also just run `nvm use 20` if you don't want to set it as a system-wide default
+nvm alias default 20
 
-```sh
-node -v
-```
+# Enable corepack, which will manage our package manager versions
+corepack enable
 
-4. Install yarn
-
-```sh
-npm install -g yarn
-```
-
-5. Fork and clone project
-
-```sh
-git clone git@github.com:<GITHUB_USERNAME>/aws-azure-login.git
-cd aws-azure-login
-```
-
-6. Install dependencies
-
-```sh
+# Install our dependencies
 yarn install
-```
 
-7a. Start dev mode
-
-```sh
-yarn start
-```
-
-7b. Start prod mode
-
-```sh
-yarn build && node ./lib/index.js
+# Build our project and run linting
+yarn build
+yarn lint
 ```
