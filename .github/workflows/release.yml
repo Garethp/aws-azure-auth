@@ -26,6 +26,7 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    environment: Deployment
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
