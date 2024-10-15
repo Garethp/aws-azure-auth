@@ -1,7 +1,7 @@
 [![view on npm](http://img.shields.io/npm/v/aws-azure-auth.svg)](https://www.npmjs.org/package/aws-azure-auth)
 [![npm module downloads per month](http://img.shields.io/npm/dm/aws-azure-auth.svg)](https://www.npmjs.org/package/aws-azure-auth)
 
-# azure-azure-auth
+# aws-azure-auth
 
 If your organization uses [Azure Active Directory](https://azure.microsoft.com) to provide SSO login to the AWS console, then there is no easy way to log in on the command line or to use the [AWS CLI](https://aws.amazon.com/cli/). This tool fixes that. It lets you use the normal Azure AD login (including MFA) from a command line to create a federated AWS session and places the temporary credentials in the proper place for the AWS CLI and SDKs.
 
@@ -11,7 +11,7 @@ Installation can be done in any of the following platform - Windows, Linux, Dock
 
 ### Windows
 
-Install [Node.js](https://nodejs.org/) v12 or higher. Then install azure-azure-auth with npm:
+Install [Node.js](https://nodejs.org/) v12 or higher. Then install aws-azure-auth with npm:
 
     npm install -g aws-azure-auth
 
@@ -25,7 +25,7 @@ In Linux you can either install for all users or just the current user. In eithe
 
 #### Option A: Install for All Users
 
-Install azure-azure-auth globally with npm:
+Install aws-azure-auth globally with npm:
 
     sudo npm install -g aws-azure-auth --unsafe-perm
 
@@ -44,28 +44,28 @@ First configure npm to install global packages in [your home directory](https://
     echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile
     source ~/.profile
 
-Then install azure-azure-auth:
+Then install aws-azure-auth:
 
-    npm install -g azure-azure-auth
+    npm install -g aws-azure-auth
 
 ### Docker
 
-A Docker image has been built with azure-azure-auth preinstalled. You simply need to run the command with a volume mounted to your AWS configuration directory.
+A Docker image has been built with aws-azure-auth preinstalled. You simply need to run the command with a volume mounted to your AWS configuration directory.
 
-    docker run --rm -it -v ~/.aws:/root/.aws azure-azure-auth/azure-azure-auth
+    docker run --rm -it -v ~/.aws:/root/.aws aws-azure-auth/aws-azure-auth
 
 The Docker image is configured with an entrypoint so you can just feed any arguments in at the end.
 
-You can also put the docker-launch.sh script into your bin directory for the azure-azure-auth command to function as usual:
+You can also put the docker-launch.sh script into your bin directory for the aws-azure-auth command to function as usual:
 
-    sudo curl -o /usr/local/bin/azure-azure-auth https://raw.githubusercontent.com/azure-azure-auth/azure-azure-auth/main/docker-launch.sh -L
-    sudo chmod o+x /usr/local/bin/azure-azure-auth
+    sudo curl -o /usr/local/bin/aws-azure-auth https://raw.githubusercontent.com/aws-azure-auth/aws-azure-auth/main/docker-launch.sh -L
+    sudo chmod o+x /usr/local/bin/aws-azure-auth
 
-Now just run `azure-azure-auth`.
+Now just run `aws-azure-auth`.
 
 ### Snap
 
-https://snapcraft.io/azure-azure-auth
+https://snapcraft.io/aws-azure-auth
 
 ## Usage
 
@@ -73,24 +73,24 @@ https://snapcraft.io/azure-azure-auth
 
 #### AWS
 
-To configure the azure-azure-auth client run:
+To configure the aws-azure-auth client run:
 
-    azure-azure-auth --configure
+    aws-azure-auth --configure
 
 You'll need your [Azure Tenant ID and the App ID URI](#getting-your-tenant-id-and-app-id-uri). To configure a named profile, use the --profile flag.
 
-    azure-azure-auth --configure --profile foo
+    aws-azure-auth --configure --profile foo
 
 ##### GovCloud Support
 
-To use azure-azure-auth with AWS GovCloud, set the `region` profile property in your ~/.aws/config to the one of the GovCloud regions:
+To use aws-azure-auth with AWS GovCloud, set the `region` profile property in your ~/.aws/config to the one of the GovCloud regions:
 
 - us-gov-west-1
 - us-gov-east-1
 
 ##### China Region Support
 
-To use azure-azure-auth with AWS China Cloud, set the `region` profile property in your ~/.aws/config to the China region:
+To use aws-azure-auth with AWS China Cloud, set the `region` profile property in your ~/.aws/config to the China region:
 
 - cn-north-1
 
@@ -103,11 +103,11 @@ During the configuration you can decide to stay logged in:
 If you set this configuration to true, the usual authentication with username/password/MFA is skipped as it's using session cookies to remember your identity. This enables you to use `--no-prompt` without the need to store your password anywhere, it's an alternative for using environment variables as described below.
 As soon as you went through the full login procedure once, you can just use:
 
-    azure-azure-auth --no-prompt
+    aws-azure-auth --no-prompt
 
 or
 
-    azure-azure-auth --profile foo --no-prompt
+    aws-azure-auth --profile foo --no-prompt
 
 to refresh your aws credentials.
 
@@ -124,23 +124,23 @@ You can optionally store your responses as environment variables:
 
 To avoid having to `<Enter>` through the prompts after setting these environment variables, use the `--no-prompt` option when running the command.
 
-    azure-azure-auth --no-prompt
+    aws-azure-auth --no-prompt
 
 Use the `HISTCONTROL` environment variable to avoid storing the password in your bash history (notice the space at the beginning):
 
     $ HISTCONTROL=ignoreboth
     $  export AZURE_DEFAULT_PASSWORD=mypassword
-    $ azure-azure-auth
+    $ aws-azure-auth
 
 ### Logging In
 
-Once azure-azure-auth is configured, you can log in. For the default profile, just run:
+Once aws-azure-auth is configured, you can log in. For the default profile, just run:
 
-    azure-azure-auth
+    aws-azure-auth
 
 You will be prompted for your username and password. If MFA is required you'll also be prompted for a verification code or mobile device approval. To log in with a named profile:
 
-    azure-azure-auth --profile foo
+    aws-azure-auth --profile foo
 
 Alternatively, you can set the `AWS_PROFILE` environmental variable to the name of the profile just like the AWS CLI.
 
@@ -148,17 +148,17 @@ Once you log in you can use the AWS CLI or SDKs as usual!
 
 If you are logging in on an operating system with a GUI, you can log in using the actual Azure web form instead of the CLI:
 
-    azure-azure-auth --mode gui
+    aws-azure-auth --mode gui
 
 Logging in with GUI mode is likely to be much more reliable.
 
 _Note:_ on virtual machines, or when rendering of the puppeteer UI fails, you might need to disable the GPU Hardware Acceleration:
 
-    azure-azure-auth --mode gui --disable-gpu
+    aws-azure-auth --mode gui --disable-gpu
 
 _Note:_ on Linux you will likely need to disable the Puppeteer sandbox or Chrome will fail to launch:
 
-    azure-azure-auth --no-sandbox
+    aws-azure-auth --no-sandbox
 
 ### Behind corporate proxy
 
@@ -170,11 +170,11 @@ If behind corporate proxy, then just set https_proxy env variable.
 
 You can renew credentials for all configured profiles in one run. This is especially useful, if the maximum session length on AWS side is configured to a low value due to security constraints. Just run:
 
-    azure-azure-auth --all-profiles
+    aws-azure-auth --all-profiles
 
 If you configure all profiles to stay logged in, you can easily skip the prompts:
 
-    azure-azure-auth --all-profiles --no-prompt
+    aws-azure-auth --all-profiles --no-prompt
 
 This will allow you to automate the credentials refresh procedure, eg. by running a cronjob every 5 minutes.
 To skip unnecessary calls, the credentials are only getting refreshed if the time to expire is lower than 11 minutes.
@@ -195,18 +195,18 @@ Your Azure AD system admin should be able to provide you with your Tenant ID and
 
 ## How It Works
 
-The Azure login page uses JavaScript, which requires a real web browser. To automate this from a command line, azure-azure-auth uses [Puppeteer](https://github.com/GoogleChrome/puppeteer), which automates a real Chromium browser. It loads the Azure login page behind the scenes, populates your username and password (and MFA token), parses the SAML assertion, uses the [AWS STS AssumeRoleWithSAML API](http://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithSAML.html) to get temporary credentials, and saves these in the CLI credentials file.
+The Azure login page uses JavaScript, which requires a real web browser. To automate this from a command line, aws-azure-auth uses [Puppeteer](https://github.com/GoogleChrome/puppeteer), which automates a real Chromium browser. It loads the Azure login page behind the scenes, populates your username and password (and MFA token), parses the SAML assertion, uses the [AWS STS AssumeRoleWithSAML API](http://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRoleWithSAML.html) to get temporary credentials, and saves these in the CLI credentials file.
 
 ## Troubleshooting
 
-The nature of browser automation with Puppeteer means the solution is bit brittle. A minor change on the Microsoft side could break the tool. If something isn't working, you can fall back to GUI mode (above). To debug an issue, you can run in debug mode (--mode debug) to see the GUI while azure-azure-auth tries to populate it. You can also have the tool print out more detail on what it is doing to try to do in order to diagnose. azure-azure-auth uses the [Node debug module](https://www.npmjs.com/package/debug) to print out debug info. Just set the DEBUG environmental variable to 'azure-azure-auth'. On Linux/OS X:
+The nature of browser automation with Puppeteer means the solution is bit brittle. A minor change on the Microsoft side could break the tool. If something isn't working, you can fall back to GUI mode (above). To debug an issue, you can run in debug mode (--mode debug) to see the GUI while aws-azure-auth tries to populate it. You can also have the tool print out more detail on what it is doing to try to do in order to diagnose. aws-azure-auth uses the [Node debug module](https://www.npmjs.com/package/debug) to print out debug info. Just set the DEBUG environmental variable to 'aws-azure-auth'. On Linux/OS X:
 
-    DEBUG=azure-azure-auth azure-azure-auth
+    DEBUG=aws-azure-auth aws-azure-auth
 
 On Windows:
 
-    set DEBUG=azure-azure-auth
-    azure-azure-auth
+    set DEBUG=aws-azure-auth
+    aws-azure-auth
 
 ## Support for Other Authentication Providers
 
